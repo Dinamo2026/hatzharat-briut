@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הצהרת בריאות — חוג דינמו</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#2A3453; --blue:#1d7bc0; --ink:#1f2433; --muted:#5d6478; --line:#d9dce5; --soft:#f3f5f9; --err:#c0392b; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; font-family:'Rubik',sans-serif; color:var(--ink); background:var(--soft); font-size:17px; line-height:1.5; }
+  main { max-width:560px; margin:0 auto; padding:20px 16px 40px; }
+  header { text-align:center; padding:8px 0 18px; }
+  header img { height:52px; }
+  h1 { font-size:24px; font-weight:500; color:var(--navy); margin:14px 0 4px; }
+  .sub { color:var(--muted); font-weight:300; font-size:16px; }
+  .card { background:#fff; border-radius:14px; padding:18px 16px; margin-bottom:14px; box-shadow:0 1px 3px rgba(42,52,83,.06); }
+  h2 { font-size:18px; font-weight:600; color:var(--navy); margin:0 0 12px; }
+  label.f { display:block; font-size:15px; color:var(--muted); margin:10px 0 4px; }
+  input[type=text], input[type=tel], textarea, select { width:100%; font:inherit; font-size:17px; padding:11px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
+  input:focus, textarea:focus, select:focus { outline:2px solid var(--blue); border-color:transparent; }
+  .q { padding:12px 0; border-bottom:1px solid var(--line); }
+  .q:last-child { border-bottom:0; }
+  .q p { margin:0 0 8px; font-weight:400; }
+  .yn { display:flex; gap:8px; }
+  .yn button { flex:1; font:inherit; font-size:16px; padding:10px; border-radius:10px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; }
+  .yn button.on[data-v="לא"] { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .yn button.on[data-v="כן"] { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .q.missing p { color:var(--err); }
+  #details { display:none; }
+  .chk { display:flex; gap:10px; align-items:flex-start; padding:9px 0; font-size:16px; }
+  .chk input { width:22px; height:22px; margin-top:2px; flex:none; accent-color:var(--navy); }
+  .send { display:block; width:100%; font:inherit; font-size:19px; font-weight:500; padding:15px; border:0; border-radius:12px; background:#25D366; color:#fff; cursor:pointer; margin-top:6px; }
+  .err { color:var(--err); font-size:15px; margin-top:10px; display:none; text-align:center; }
+  .note { text-align:center; color:var(--muted); font-size:14px; font-weight:300; margin-top:10px; }
+  .miss { border-color:var(--err) !important; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="logo-navy.png" alt="DINAMO">
+    <h1>הצהרת בריאות — חוג אופני הרים</h1>
+    <div class="sub">כמה סימונים קצרים, ושליחה לדינה בוואטסאפ</div>
+  </header>
+
+  <form id="f" novalidate>
+    <div class="card">
+      <h2>פרטי הילד/ה</h2>
+      <label class="f" for="child">שם מלא</label><input type="text" id="child" required>
+      <label class="f" for="grade">כיתה</label><input type="text" id="grade" required>
+      <label class="f" for="hug">החוג</label>
+      <select id="hug" required>
+        <option value="">בחירה…</option>
+        <option>ירושלים</option>
+        <option>כפר אדומים</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>הורה ואיש קשר לחירום</h2>
+      <label class="f" for="parent">שם ההורה</label><input type="text" id="parent" required>
+      <label class="f" for="phone">טלפון ההורה</label><input type="tel" id="phone" inputmode="tel" required>
+      <label class="f" for="emer">איש קשר נוסף לחירום — שם וטלפון</label><input type="text" id="emer" required>
+      <label class="f" for="kupa">קופת חולים</label>
+      <select id="kupa" required>
+        <option value="">בחירה…</option>
+        <option>כללית</option><option>מכבי</option><option>מאוחדת</option><option>לאומית</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>שאלון בריאות</h2>
+      <div id="qs"></div>
+      <div id="details">
+        <label class="f" for="det">סימנתם "כן" — ספרו בקצרה מה, ומה עושים במקרה הצורך</label>
+        <textarea id="det" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>הצהרת ההורה</h2>
+      <label class="chk"><input type="checkbox" class="d"> הילד/ה בריא/ה, ואין סיבה רפואית ידועה לי המונעת ממנו/ה להשתתף בפעילות גופנית במאמץ ובחוג אופני הרים.</label>
+      <label class="chk"><input type="checkbox" class="d"> כל הפרטים שמילאתי נכונים ומלאים.</label>
+      <label class="chk"><input type="checkbox" class="d"> אעדכן את המדריכה מיד בכל שינוי במצבו/ה הבריאותי של הילד/ה במהלך השנה.</label>
+      <label class="chk"><input type="checkbox" class="d"> אני מאשר/ת למדריכה להעניק לילד/ה עזרה ראשונה ולהזעיק עזרה רפואית במקרה הצורך, ולפנות אליי מיד.</label>
+      <label class="f" for="sig">חתימה — שם מלא של ההורה</label><input type="text" id="sig" required>
+    </div>
+
+    <button type="submit" class="send">שליחה לדינה בוואטסאפ</button>
+    <div class="err" id="err">חסרים כמה פרטים — הם מסומנים באדום</div>
+    <div class="note">הפרטים נשלחים ישירות לדינה בוואטסאפ ולא נשמרים בדף.</div>
+  </form>
+</main>
+
+<script>
+const Q = [
+  "האם נאמר לילד/ה על ידי רופא שיש לו/ה בעיה בלב או בלחץ הדם?",
+  "כאבים בחזה, סחרחורות או קוצר נשימה חריג בזמן מאמץ?",
+  "התעלפות או איבוד הכרה בשנה האחרונה?",
+  "אסתמה או בעיית נשימה אחרת?",
+  "אפילפסיה או פרכוסים?",
+  "סוכרת?",
+  "אלרגיה (מזון, תרופות, עקיצות דבורים)? אפיפן?",
+  "תרופות באופן קבוע?",
+  "פציעה, שבר או ניתוח בשנה האחרונה, או בעיה בגב, במפרקים או בעצמות?",
+  "משהו נוסף שחשוב שהמדריכה תדע (קשב, חרדה, רגישות, צורך מיוחד)?"
+];
+const ans = Array(Q.length).fill(null);
+const qs = document.getElementById('qs');
+Q.forEach((t, i) => {
+  const d = document.createElement('div'); d.className = 'q';
+  d.innerHTML = `<p>${i+1}. ${t}</p><div class="yn"><button type="button" data-v="לא">לא</button><button type="button" data-v="כן">כן</button></div>`;
+  d.querySelectorAll('button').forEach(b => b.onclick = () => {
+    ans[i] = b.dataset.v; d.classList.remove('missing');
+    d.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    document.getElementById('details').style.display = ans.includes('כן') ? 'block' : 'none';
+  });
+  qs.appendChild(d);
+});
+
+const v = id => document.getElementById(id).value.trim();
+document.getElementById('f').onsubmit = e => {
+  e.preventDefault();
+  let ok = true;
+  document.querySelectorAll('.miss').forEach(x => x.classList.remove('miss'));
+  ['child','grade','hug','parent','phone','emer','kupa','sig'].forEach(id => {
+    if (!v(id)) { document.getElementById(id).classList.add('miss'); ok = false; }
+  });
+  qs.querySelectorAll('.q').forEach((d, i) => { if (!ans[i]) { d.classList.add('missing'); ok = false; } });
+  if (ans.includes('כן') && !v('det')) { document.getElementById('det').classList.add('miss'); ok = false; }
+  document.querySelectorAll('.d').forEach(c => { if (!c.checked) { c.closest('.chk').style.color = 'var(--err)'; ok = false; } else c.closest('.chk').style.color = ''; });
+  document.getElementById('err').style.display = ok ? 'none' : 'block';
+  if (!ok) { document.querySelector('.miss, .q.missing, .chk[style*="err"]')?.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+
+  const yes = Q.map((t,i) => ans[i] === 'כן' ? `• ${i+1}. ${t}` : null).filter(Boolean);
+  const today = new Date().toLocaleDateString('he-IL');
+  const msg = [
+    '*הצהרת בריאות — חוג דינמו*',
+    '',
+    `ילד/ה: ${v('child')} · כיתה ${v('grade')} · חוג ${v('hug')}`,
+    `הורה: ${v('parent')} · ${v('phone')}`,
+    `איש קשר לחירום: ${v('emer')}`,
+    `קופת חולים: ${v('kupa')}`,
+    '',
+    yes.length ? '*שאלון בריאות — סומן "כן":*\n' + yes.join('\n') + `\nפירוט: ${v('det')}` : '*שאלון בריאות:* "לא" בכל 10 השאלות',
+    '',
+    '✅ הילד/ה בריא/ה ואין מניעה רפואית ידועה לפעילות גופנית במאמץ',
+    '✅ הפרטים נכונים ומלאים',
+    '✅ אעדכן בכל שינוי במצב הבריאותי',
+    '✅ מאשר/ת עזרה ראשונה והזעקת עזרה רפואית במקרה הצורך',
+    '',
+    `חתימה: ${v('sig')} · ${today}`
+  ].join('\n');
+  location.href = 'https://wa.me/972585903093?text=' + encodeURIComponent(msg);
+};
+</script>
+</body>
+</html>
